@@ -16,9 +16,13 @@
 """
 from django.http import HttpResponse, HttpResponseForbidden
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import get_object_or_404, redirect, render
+from django.conf import settings
+from django.core.exceptions import ValidationError
+
 from datetime import timedelta
 from member.models import Member
 from lib.email import prepare_email, send_messages_async
@@ -28,25 +32,11 @@ from django.conf import settings
 from band.helpers import do_delete_assoc
 from member.util import MemberStatusChoices
 from member.models import Member
+from member.views import verify_requester_is_user
 from gig.models import Gig
 import secrets
 from datetime import timedelta
 
-from django.conf import settings
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ValidationError
-from django.http import HttpResponse, HttpResponseForbidden
-from django.shortcuts import get_object_or_404, redirect
-from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
-
-from band.helpers import do_delete_assoc
-from lib.caldav import get_calfeed, make_calfeed, save_calfeed
-from lib.email import prepare_email, send_messages_async
-from member.models import Member
-from member.util import MemberStatusChoices
-from member.views import verify_requester_is_user
 
 
 def superuser_required(func):
